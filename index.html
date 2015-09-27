@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
 
-<!-- Mirrored from codedelicias.blogspot.de/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 27 Sep 2015 16:32:39 GMT -->
+<!-- Mirrored from codedelicias.blogspot.de/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 27 Sep 2015 18:19:55 GMT -->
 <!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
 <head>
 <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
@@ -32,7 +32,7 @@ Pepe&#8217;s Code Delicias
 <script>
       hljs.initHighlightingOnLoad();</script>
 <link type='text/css' rel='stylesheet' href='css/859616579-widget_css_bundle.css' />
-<link type='text/css' rel='stylesheet' href='css/authorization08ba.css?targetBlogID=3061683056005047223&amp;zx=d42ea868-e175-4f39-905a-9bd37c27a958' />
+<link type='text/css' rel='stylesheet' href='css/authorization9bb1.css?targetBlogID=3061683056005047223&amp;zx=2a18391b-30c5-465e-8f5f-54159e1eaa4c' />
 <style id='page-skin-1' type='text/css'><!--
 /*
 -----------------------------------------------
@@ -2365,8 +2365,56 @@ The results of CCA for this example are show to the right of the above figure. T
 <br />
 The Matlab code below was used to produce these graphics. Another for to see the relations between the variables is to plot all possible combinations of variables as a scatter plot (x's vs y's). That plot is shown after the code.<br />
 <pre><code class="matlab">
-% This is a test
-a = a + 1;
+%% Create example canonical correlation plots in Matlab
+
+% Build some simple signals with optional noise (s)
+t = 0:0.1:10;
+l = length(t);
+s = 0;
+X(:,1) = cos(t) + s*rand(1,l);
+X(:,2) = sin(t/2.5) + s*rand(1,l);
+X(:,3) = 1.2*cos(t) + 0.4 + s*rand(1,l) + t*0.0;
+
+Y(:,1) = 0.4*cos(t) + 1.5 + s*rand(1,l);
+Y(:,2) = sin(t/2.2+0.4) - 0.4 + t*0.3 + s*rand(1,l);
+
+% Plot signals over time
+figure(1)
+subplot(2,2,1); plot(t,X); ylim([-1.1 6])
+legend('x_1','x_2','x_3')
+subplot(2,2,3); plot(t,Y(:,1),'m',t,Y(:,2),'k'); ylim([-1.1 6])
+legend('y_1','y_2')
+
+% It is usually prudent to check the rank, just display it
+rank(X)
+rank(Y)
+
+% Perform CCA using Matlabs function
+[A,B,r,U,V] = canoncorr(X,Y);
+
+% Just print out results
+A,B,r
+
+subplot(2,2,2); plot(t,U); ylim([-3 2])
+subplot(2,2,4); plot(t,V); ylim([-3 2])
+
+%% Plot canonical variables 
+figure(2); clf; 
+subplot(2,1,1); hold all; plot(t,X*A); plot(t,U);
+subplot(2,1,2); hold all; plot(t,Y*B); plot(t,V);
+
+%% Plot signals against each other
+figure(3)
+subplot(3,2,1); plot(X(:,1),Y(:,1),'k.')
+subplot(3,2,3); plot(X(:,2),Y(:,1),'k.')
+subplot(3,2,5); plot(X(:,3),Y(:,1),'k.')
+subplot(3,2,2); plot(X(:,1),Y(:,2),'k.')
+subplot(3,2,4); plot(X(:,2),Y(:,2),'k.')
+subplot(3,2,6); plot(X(:,3),Y(:,2),'k.')
+
+% Some information about their correlations
+p = corrcoef([X Y]);
+p = p(1:3,4:5)
 </code></pre>
 </div>
 <script type='text/javascript'>
@@ -3654,5 +3702,5 @@ _WidgetManager._RegisterWidget('_PopularPostsView', new _WidgetInfo('PopularPost
 </script>
 </body>
 
-<!-- Mirrored from codedelicias.blogspot.de/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 27 Sep 2015 16:32:51 GMT -->
+<!-- Mirrored from codedelicias.blogspot.de/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 27 Sep 2015 18:19:56 GMT -->
 </html>
